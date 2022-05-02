@@ -19,13 +19,13 @@
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="0" Text="Your Birthday:" Margin="10, 5, 10, 0" ></TextBlock>
-        <DatePicker  Grid.Row="1" Grid.Column="0" Name="DpDate"  DisplayDate="1/1/2000" SelectedDateChanged="DpDate_SelectedDateChanged" SelectedDateFormat="Short"  Margin="10, 4, 10, 10" ></DatePicker>
+        <DatePicker  Grid.Row="1" Grid.Column="0" Name="DpDate"  DisplayDate="1/1/2000" SelectedDate="{Binding UserBirthDate, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" SelectedDateFormat="Short"  Margin="10, 4, 10, 10"></DatePicker>
         <TextBlock  Grid.Row="2" Grid.Column="0" Text="Your Age:" Margin="10, 5, 10, 0"></TextBlock>
-        <TextBox Name="TbAge" Grid.Row="3" Grid.Column="0" Height="20" Margin="10, 4, 10, 10"  Text="{Binding Age, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+        <TextBox Name="TbAge" Grid.Row="3" Grid.Column="0" Height="20" Margin="10, 4, 10, 10"  Text="{Binding Age, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"></TextBox>
         <TextBlock  Grid.Row="4" Grid.Column="0" Text="Your Western Zodiac:" Margin="10, 5, 10, 0"></TextBlock>
-        <TextBox Name="TbWestZodiac" Grid.Row="5" Grid.Column="0" Height="20" Margin="10, 4, 10, 10" IsReadOnly="True"></TextBox>
+        <TextBox Name="TbWestZodiac" Grid.Row="5" Grid.Column="0" Height="20" Margin="10, 4, 10, 10" Text="{Binding WesternZodiac, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"></TextBox>
         <TextBlock  Grid.Row="6" Grid.Column="0" Text="Your Chinese Zodiac:" Margin="10, 5, 10, 0"></TextBlock>
-        <TextBox Name="TbChineseZodiac" Grid.Row="7" Grid.Column="0" Height="20" Margin="10, 4, 10, 10" IsReadOnly="True"></TextBox>
+        <TextBox Name="TbChineseZodiac" Grid.Row="7" Grid.Column="0" Height="20" Margin="10, 4, 10, 10" Text="{Binding ChineseZodiac, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"></TextBox>
         <Button Name="BCommit" Content="Commit" Grid.Row="8" Grid.Column="0" HorizontalAlignment="Left" Margin="10, 3, 3, 3" Width="200" Command="{Binding CommitCommand}"></Button>
     </Grid>
 </UserControl>

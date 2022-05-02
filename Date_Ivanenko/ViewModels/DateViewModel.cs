@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ using Desktop.Date_Ivanenko.Tools;
 
 namespace Desktop.Date_Ivanenko.ViewModels
 {
-    class DateViewModel
+    class DateViewModel : INotifyPropertyChanged
     {
         private RelayCommand<object> _commitCommand;
         private DateTime _userBirthDate;
@@ -16,13 +17,26 @@ namespace Desktop.Date_Ivanenko.ViewModels
         private string _westernZodiac;
         private string _chineseZodiac;
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public DateTime UserBirthDate
         {
             get { return _userBirthDate; }
             set { _userBirthDate = value;
-                SetAge();
-                SetZodiac();
-                SetChineseZodeac();
+                if (GetAge() > 135 || value > DateTime.Today)
+                {
+                    MessageBox.Show("Incorrect Date!");
+                    Age = 0;
+                    WesternZodiac = "";
+                    ChineseZodiac = "";
+                    
+                }
+                else
+                {
+                    Age = GetAge();
+                    SetZodiac();
+                    SetChineseZodiac();
+                }
             }
         }
 
@@ -30,18 +44,32 @@ namespace Desktop.Date_Ivanenko.ViewModels
         {
             get { return _age; }
             set { _age = value;
+                OnPropertyChange("Age");
             }
         }
+
+        private void OnPropertyChange(string v)
+        {
+            if (v != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(v));
+            }
+        }
+
         public string WesternZodiac
         {
             get { return _westernZodiac; }
-            set { _westernZodiac = value; }
+            set { _westernZodiac = value;
+                OnPropertyChange("WesternZodiac");
+            }
         }
 
         public string ChineseZodiac
         {
             get { return _chineseZodiac; }
-            set { _chineseZodiac = value; }
+            set { _chineseZodiac = value;
+                OnPropertyChange("ChineseZodiac");
+            }
         }
 
         public RelayCommand<object> CommitCommand
@@ -54,6 +82,7 @@ namespace Desktop.Date_Ivanenko.ViewModels
 
         private void Commit()
         {
+            MessageBox.Show("Data Commited");
             if ((UserBirthDate.Month == DateTime.Today.Month) && (UserBirthDate.Day == DateTime.Today.Day))
             {
                 MessageBox.Show("Happy Birthday!");
@@ -62,16 +91,16 @@ namespace Desktop.Date_Ivanenko.ViewModels
 
         private bool CanExecute(object obj)
         {
-            SetAge();
-            return !(UserBirthDate > DateTime.Today) && !(Age > 135);
+            if (String.IsNullOrEmpty(WesternZodiac) || String.IsNullOrEmpty(ChineseZodiac)) return false;
+            return true;
         }
 
-        public void SetAge()
+        public int GetAge()
         {
             var today = DateTime.Today;
             var age = today.Year - UserBirthDate.Year;
             if (UserBirthDate.Date > today.AddYears(-age)) age--;
-            Age = age;
+            return age;
         }
 
         public void SetZodiac()
@@ -153,7 +182,7 @@ namespace Desktop.Date_Ivanenko.ViewModels
                     break;
             }
         }
-        public void SetChineseZodeac()
+        public void SetChineseZodiac()
         {
             string[] animals = { "Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake", "Horse", "Goat", "Monkey", "Rooster", "Dog", "Pig" };
             string[] elements = { "Wood", "Fire", "Earth", "Metal", "Water" };
@@ -162,7 +191,7 @@ namespace Desktop.Date_Ivanenko.ViewModels
             int ei = (int)Math.Floor((UserBirthDate.Year - 4.0) % 10 / 2);
             int ai = (UserBirthDate.Year - 4) % 12;
 
-            _chineseZodiac = elements[ei] + " " + animals[ai];
+            ChineseZodiac = elements[ei] + " " + animals[ai];
         }
     }
 }

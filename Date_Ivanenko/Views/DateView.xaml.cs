@@ -25,26 +25,5 @@ namespace Desktop.Date_Ivanenko.Views
             DataContext = _viewModel = new DateViewModel();
         }
 
-        private void DpDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
-        {
-            DateTime? date = DpDate.SelectedDate.Value.Date;
-            if (date == null)
-            {
-
-            } else
-            {
-                _viewModel.UserBirthDate = DpDate.SelectedDate.Value.Date;
-                if (!(_viewModel.UserBirthDate > DateTime.Today) && !(_viewModel.Age > 135))
-                {
-                    TbAge.Text = _viewModel.Age.ToString();
-                    TbWestZodiac.Text = _viewModel.WesternZodiac;
-                    TbChineseZodiac.Text = _viewModel.ChineseZodiac;
-                } else
-                {
-                    MessageBox.Show("Inccorect Date!");
-                }
-            }
-
-        }
     }
 }
